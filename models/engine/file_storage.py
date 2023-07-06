@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """commented module"""
 import json
+import os
 
 
 class FileStorage:
@@ -15,19 +16,20 @@ class FileStorage:
         self.__objects[key] = obj
 
     def save(self):
-        serialized_objects = FileStorage
+        serialized_objects = {}
         for key, obj in self.__objects.items():
             serialized_objects[key] = obj.to_dict()
         with open(self.__file_path, 'w') as file:
             json.dump(serialized_objects, file)
 
     def reload(self):
-        try:
-            with open(self.__file_path, 'r') as file:
-                serialized_objects = json.load(file)
-                for key, obj_dict in serialized_objects.items():
-                    class_name, obj.id = key.split('.')
-                    obj = globals()[class_name](**obj_dict)
-                    self.__objects[key] = obj
-        except FileNotFoundError:
-            pass
+        if os.path.exists(self.__file_path):
+            with open(self.__file_path, 'r') as f:
+                data = json.load(f)
+            for k, v in data.items():
+                cls_name = k.split('.')[0]
+                if cls_name == "BaseModel":
+                    from models.base_model import BaseModel
+                    self.__objects[k] = BaseModel(**v)
+    
+
