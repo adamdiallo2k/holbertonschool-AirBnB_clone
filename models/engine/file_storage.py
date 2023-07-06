@@ -22,11 +22,14 @@ class FileStorage:
             json.dump({k: v.to_dict() for k, v in self.__objects.items()}, f)
 
     def reload(self):
-        if os.path.exists(self.__file_path):
-            with open(self.__file_path, 'r') as f:
-                data = json.load(f)
-            for k, v in data.items():
-                cls_name = k.split('.')[0]
-                if cls_name == "BaseModel":
-                    from models.base_model import BaseModel
-                    self.__objects[k] = BaseModel(**v)
+        try:
+            if os.path.exists(self.__file_path):
+                with open(self.__file_path, 'r') as f:
+                    data = json.load(f)
+                for k, v in data.items():
+                    cls_name = k.split('.')[0]
+                    if cls_name == "BaseModel":
+                        from models.base_model import BaseModel
+                        self.__objects[k] = BaseModel(**v)
+        except FileNotFoundError:
+            pass
