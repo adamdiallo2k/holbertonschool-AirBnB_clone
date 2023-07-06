@@ -2,6 +2,7 @@
 """commented module"""
 import uuid
 from datetime import datetime
+from models import storage
 
 
 class BaseModel:
@@ -11,6 +12,7 @@ class BaseModel:
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
         if kwargs:
+            storage.new(self)
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
@@ -18,9 +20,10 @@ class BaseModel:
                     setattr(self, key, value)
 
     def __str__(self):
-        return f'[{self.__class__.__name__}] ({self.id} {self.__dict__})'
+        return f'[{self.__class__.__name__}] ({self.id}) {self.__dict__}'
 
     def save(self):
+        storage.save()
         self.updated_at = datetime.now()
 
     def to_dict(self):
