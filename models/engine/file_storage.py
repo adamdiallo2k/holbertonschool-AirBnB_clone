@@ -1,10 +1,9 @@
 #!/usr/bin/python3
 """File_storage class"""
-
-
 import json
 import os
 import importlib
+
 
 class FileStorage:
     """commented class"""
