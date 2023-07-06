@@ -1,28 +1,29 @@
-#!/usr/bin/python3
-"""commented module"""
 import json
-
+import os
+import importlib
 
 class FileStorage:
-    __file_path = ""
+    __file_path = "file.json"
     __objects = {}
 
-    def __init__(self, file_path, objects):
-        __file__path = file_path
-        __objects = objects
-    
     def all(self):
-        return self.__objects.__dict__()
-    
+        return self.__objects
+
     def new(self, obj):
-        self.__objects[f"{obj.__class__.__name__}.{id(obj)}"] = obj
-    
+        key = obj.__class__.__name__ + "." + obj.id
+        self.__objects[key] = obj
+
     def save(self):
-            with open(self.__file_path, "w") as write_file:
-                json.dump(self.__objects, write_file)
-    
+        with open(self.__file_path, 'w') as f:
+            json.dump({k: v.to_dict() for k, v in self.__objects.items()}, f)
+
     def reload(self):
-        if self.__file_path is not None:
-             with open(self.__file_path, 'w') as read_file:
-                 data = json.load(read_file)
-        self.__objects = data
+        if os.path.exists(self.__file_path):
+            with open(self.__file_path, 'r') as f:
+                data = json.load(f)
+            for k, v in data.items():
+                cls_name = k.split('.')[0]
+                if cls_name == "BaseModel":
+                    from models.base_model import BaseModel
+                    self.__objects[k] = BaseModel(**v)
+
