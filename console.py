@@ -8,11 +8,9 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb)"
 
     def do_exit(self, arg):
-        """Exit the shell: EXIT"""
         return True
 
     def do_quit(self, arg):
-        """Quit the shell: QUIT"""
         return self.do_exit(arg)
 
 
