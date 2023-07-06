@@ -1,8 +1,13 @@
+#!/usr/bin/python3
+"""File_storage class"""
+
+
 import json
 import os
 import importlib
 
 class FileStorage:
+    """commented class"""
     __file_path = "file.json"
     __objects = {}
 
@@ -26,4 +31,3 @@ class FileStorage:
                 if cls_name == "BaseModel":
                     from models.base_model import BaseModel
                     self.__objects[k] = BaseModel(**v)
-
