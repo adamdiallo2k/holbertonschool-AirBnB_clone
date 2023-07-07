@@ -23,15 +23,11 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def emptyline(self):
-        """An empty line + ENTER shouldn’t execute anything"""
+        """An empty line + ENTER shouldnt execute anything"""
         pass
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-class User:
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        pass
 
     def show(self, user_id):
         for user in self.users:
@@ -129,5 +125,5 @@ class User:
                 print("Invalid command.")
 
 if __name__ == "__main__":
-    console = Console()
+    console = console()
     console.run()
