@@ -1,18 +1,16 @@
 #!/usr/bin/python3
 """BaseModel class"""
 import cmd
-import pickle
-from models.user import User
-from models import storage
+import models
 from models.base_model import BaseModel
-import sys
-import console
+from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
     """HBNBCommand class that includes methods for the HBNB command interpreter."""
 
     prompt = '(hbnb) '
+    classes = {"BaseModel": BaseModel, "User": User}
 
     def do_quit(self, arg):
         """Quit command to exit the program"""
@@ -23,107 +21,86 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def emptyline(self):
-        """An empty line + ENTER shouldnt execute anything"""
+        """An empty line + ENTER shouldn’t execute anything"""
         pass
+
+    def do_create(self, arg):
+        """Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id."""
+        args = arg.split()
+        if len(args) == 0:
+            print("** class name missing **")
+        elif args[0] not in self.classes:
+            print("** class doesn't exist **")
+        else:
+            new_instance = self.classes[args[0]]()
+            new_instance.save()
+            print(new_instance.id)
+
+    def do_show(self, arg):
+        """Prints the string representation of an instance based on the class name and id."""
+        args = arg.split()
+        if len(args) == 0:
+            print("** class name missing **")
+        elif args[0] not in self.classes:
+            print("** class doesn't exist **")
+        elif len(args) == 1:
+            print("** instance id missing **")
+        else:
+            key = args[0] + "." + args[1]
+            if key not in models.storage.all():
+                print("** no instance found **")
+            else:
+                print(models.storage.all()[key])
+
+    def do_destroy(self, arg):
+        """Deletes an instance based on the class name and id (save the change into the JSON file)."""
+        args = arg.split()
+        if len(args) == 0:
+            print("** class name missing **")
+        elif args[0] not in self.classes:
+            print("** class doesn't exist **")
+        elif len(args) == 1:
+            print("** instance id missing **")
+        else:
+            key = args[0] + "." + args[1]
+            if key not in models.storage.all():
+                print("** no instance found **")
+            else:
+                del models.storage.all()[key]
+                models.storage.save()
+
+    def do_all(self, arg):
+        """Prints all string representation of all instances based or not on the class name."""
+        args = arg.split()
+        if len(args) > 0 and args[0] not in self.classes:
+            print("** class doesn't exist **")
+        else:
+            for key, value in models.storage.all().items():
+                if len(args) > 0 and args[0] == key.split(".")[0]:
+                    print(value)
+                elif len(args) == 0:
+                    print(value)
+
+    def do_update(self, arg):
+        """Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file)."""
+        args = arg.split()
+        if len(args) == 0:
+            print("** class name missing **")
+        elif args[0] not in self.classes:
+            print("** class doesn't exist **")
+        elif len(args) == 1:
+            print("** instance id missing **")
+        else:
+            key = args[0] + "." + args[1]
+            if key not in models.storage.all():
+                print("** no instance found **")
+            elif len(args) == 2:
+                print("** attribute name missing **")
+            elif len(args) == 3:
+                print("** value missing **")
+            else:
+                setattr(models.storage.all()[key], args[2], args[3])
+                models.storage.all()[key].save()
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-
-    def show(self, user_id):
-        for user in self.users:
-            if user.id == user_id:
-                print(f"User ID: {user.id}")
-                print(f"Username: {user.username}")
-                print(f"Email: {user.email}")
-                return
-        print("User not found.")
-
-    def create(self, username, email):
-        user_id = len(self.users) + 1
-        user = User(user_id, username, email)
-        self.users.append(user)
-        print("User created successfully.")
-
-    def destroy(self, user_id):
-        for user in self.users:
-            if user.id == user_id:
-                self.users.remove(user)
-                print("User deleted successfully.")
-                return
-        print("User not found.")
-
-    def update(self, user_id, **kwargs):
-        for user in self.users:
-            if user.id == user_id:
-                for key, value in kwargs.items():
-                    setattr(user, key, value)
-                print("User updated successfully.")
-                return
-        print("User not found.")
-
-    def all(self):
-        if len(self.users) == 0:
-            print("No users found.")
-        else:
-            for user in self.users:
-                print(f"User ID: {user.id}")
-                print(f"Username: {user.username}")
-                print(f"Email: {user.email}")
-                print()
-
-    def run(self):
-        while True:
-            command = input("Enter a command: ")
-            command_parts = command.split()
-
-            if len(command_parts) < 2:
-                print("Invalid command.")
-                continue
-
-            action = command_parts[0]
-            entity = command_parts[1]
-
-            if entity.lower() != "user":
-                print("Invalid entity.")
-                continue
-
-            if action.lower() == "show":
-                if len(command_parts) != 3:
-                    print("Invalid command. Usage: show user <user_id>")
-                    continue
-                user_id = int(command_parts[2])
-                self.show(user_id)
-            elif action.lower() == "create":
-                if len(command_parts) != 4:
-                    print("Invalid command. Usage: create user <username> <email>")
-                    continue
-                username = command_parts[2]
-                email = command_parts[3]
-                self.create(username, email)
-            elif action.lower() == "destroy":
-                if len(command_parts) != 3:
-                    print("Invalid command. Usage: destroy user <user_id>")
-                    continue
-                user_id = int(command_parts[2])
-                self.destroy(user_id)
-            elif action.lower() == "update":
-                if len(command_parts) < 4:
-                    print("Invalid command. Usage: update user <user_id> key1=value1 key2=value2 ...")
-                    continue
-                user_id = int(command_parts[2])
-                kwargs = {}
-                for arg in command_parts[3:]:
-                    key, value = arg.split("=")
-                    kwargs[key] = value
-                self.update(user_id, **kwargs)
-            elif action.lower() == "all":
-                if len(command_parts) != 2:
-                    print("Invalid command. Usage: all user")
-                    continue
-                self.all()
-            else:
-                print("Invalid command.")
-
-if __name__ == "__main__":
-    console = console()
-    console.run()
