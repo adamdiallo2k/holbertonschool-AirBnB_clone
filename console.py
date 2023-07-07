@@ -6,7 +6,7 @@ from models.user import User
 from models import storage
 from models.base_model import BaseModel
 import sys
-
+import console
 
 
 class HBNBCommand(cmd.Cmd):
