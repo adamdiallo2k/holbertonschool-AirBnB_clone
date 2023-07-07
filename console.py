@@ -31,6 +31,7 @@ if __name__ == '__main__':
 class User:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        pass
 
     def show(self, user_id):
         for user in self.users:
