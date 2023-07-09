@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 """FileStorage class"""
 import json
-import os
-import importlib
-import pickle
 from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
@@ -11,7 +8,6 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-
 
 class FileStorage:
     """FileStorage class that serializes instances to a JSON file and deserializes JSON file to instances."""
@@ -29,35 +25,18 @@ class FileStorage:
         FileStorage.__objects[key] = obj
 
     def save(self):
-        """
-        The `save` function saves the objects in a dictionary to a JSON file.
-        """
-        with open(self.__file_path, 'w') as f:
-            pickle.dump({k: v.to_dict() for k, v in self.__objects.items()}, f)
-
         """Serializes __objects to the JSON file (path: __file_path)"""
         with open(FileStorage.__file_path, 'w') as f:
             json.dump({k: v.to_dict() for k, v in FileStorage.__objects.items()}, f)
 
-
     def reload(self):
         """Deserializes the JSON file to __objects (only if the JSON file (__file_path) exists"""
         try:
-            if os.path.exists(self.__file_path):
-                with open(self.__file_path, 'rb') as f:
-                    data = pickle.load(f)
-                for k, v in data.items():
-                    cls_name = k.split('.')[0]
-                    if cls_name == "BaseModel":
-                        from models.base_model import BaseModel
-                        self.__objects[k] = BaseModel(**v)
-
             with open(FileStorage.__file_path, 'r') as f:
                 objects = json.load(f)
             for obj in objects.values():
                 cls = obj['__class__']
                 if cls in globals():
                     FileStorage.__objects[obj['id']] = globals()[cls](**obj)
-
         except FileNotFoundError:
             pass
