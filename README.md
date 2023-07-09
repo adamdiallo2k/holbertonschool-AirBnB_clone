@@ -67,6 +67,18 @@ AirBnB_clone
 - `models/user.py`: One of the classes that inherit from BaseModel.
 - `models/engine/file_storage.py`: Contains the class FileStorage that serializes instances to a JSON file and deserializes JSON files to instances.
 
+### Console Function Description
+
+  - **do_create** -> creates a new instance of the entered class, saves the instance to the JSON file and prints its id.
+  - **do_show** -> prints the string representation of an instance based on the class name and id.
+  - **do_destroy** -> deletes an instance based on the class name and id, and saves the change into the JSON file.
+  - **do_all** -> prints all string representation of all instances based or not on the class name.
+  - **do_update** -> Updates an instance based on the class name and id by adding or updating attribute and saves the change into the JSON file.
+  - **emptyline** -> it does nothing when an empty line is entered.
+  - **postloop** -> prints a newline.
+  - **do_quit** -> quit command to exit the console.
+  - **do_EOF** -> EOF command to exit the console.
+
 
 ### Usage
 
