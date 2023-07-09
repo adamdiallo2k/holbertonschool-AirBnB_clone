@@ -4,13 +4,27 @@ import cmd
 import models
 from models.base_model import BaseModel
 from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
     """HBNBCommand class that includes methods for the HBNB command interpreter."""
 
     prompt = '(hbnb) '
-    classes = {"BaseModel": BaseModel, "User": User}
+    classes = {
+        "BaseModel": BaseModel, 
+        "User": User, 
+        "Place": Place, 
+        "State": State, 
+        "City": City, 
+        "Amenity": Amenity, 
+        "Review": Review
+    }
+
 
     def do_quit(self, arg):
         """Quit command to exit the program"""
