@@ -2,7 +2,12 @@
 """File_storage class"""
 import json
 import os
+<<<<<<< Updated upstream
 
+=======
+import importlib
+import pickle
+>>>>>>> Stashed changes
 
 class FileStorage:
     """
@@ -40,7 +45,7 @@ class FileStorage:
         The `save` function saves the objects in a dictionary to a JSON file.
         """
         with open(self.__file_path, 'w') as f:
-            json.dump({k: v.to_dict() for k, v in self.__objects.items()}, f)
+            pickle.dump({k: v.to_dict() for k, v in self.__objects.items()}, f)
 
     def reload(self):
         """
@@ -50,8 +55,8 @@ class FileStorage:
         """
         try:
             if os.path.exists(self.__file_path):
-                with open(self.__file_path, 'r') as f:
-                    data = json.load(f)
+                with open(self.__file_path, 'rb') as f:
+                    data = pickle.load(f)
                 for k, v in data.items():
                     cls_name = k.split('.')[0]
                     if cls_name == "BaseModel":
