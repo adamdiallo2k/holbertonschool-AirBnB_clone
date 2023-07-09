@@ -17,7 +17,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
->>>>>>> 479ade809e06f69f76efa7ff2df8ea96891feb7f
+
 
 class FileStorage:
     """FileStorage class that serializes instances to a JSON file and deserializes JSON file to instances."""
