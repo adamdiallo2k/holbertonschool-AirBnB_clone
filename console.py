@@ -9,6 +9,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from models import storage
 
 class HBNBCommand(cmd.Cmd):
     """HBNBCommand class that includes methods for the HBNB command interpreter."""
@@ -30,7 +31,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id."""
-        from models import storage
         if not arg:
             print("** class name missing **")
             return
@@ -45,7 +45,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, arg):
         """Prints the string representation of an instance based on the class name and id."""
-        from models import storage
         if not arg:
             print("** class name missing **")
             return
@@ -68,7 +67,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, arg):
         """Deletes an instance based on the class name and id (save the change into the JSON file)."""
-        from models import storage
         if not arg:
             print("** class name missing **")
             return
