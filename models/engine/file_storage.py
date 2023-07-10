@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """FileStorage class"""
 import json
-from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -13,7 +12,14 @@ class FileStorage:
     """FileStorage class that serializes instances to a JSON file and deserializes JSON file to instances."""
 
     __file_path = "file.json"
-    __objects = {}
+    __objects = {
+         "User": User,
+        "State": State,
+        "City": City,
+        "Amenity": Amenity,
+        "Place": Place,
+        "Review": Review
+    }
 
     def all(self):
         """Returns the dictionary __objects"""
@@ -22,21 +28,24 @@ class FileStorage:
     def new(self, obj):
         """Sets in __objects the obj with key <obj class name>.id"""
         key = obj.__class__.__name__ + "." + obj.id
-        FileStorage.__objects[key] = obj
+        self.__objects[key] = obj
 
     def save(self):
         """Serializes __objects to the JSON file (path: __file_path)"""
-        with open(FileStorage.__file_path, 'w') as f:
-            json.dump({k: v.to_dict() for k, v in FileStorage.__objects.items()}, f)
+        serialize_obj = {}
+        for key, obj in self.__objects.items():
+            serialize_obj[key] = obj.to_dict()
+        with open(self.__file_path, 'w') as f:
+            json.dump(serialize_obj, f)
 
     def reload(self):
         """Deserializes the JSON file to __objects (only if the JSON file (__file_path) exists"""
         try:
-            with open(FileStorage.__file_path, 'r') as f:
+            with open(self.__file_path, 'r') as f:
                 objects = json.load(f)
-            for obj in objects.values():
-                cls = obj['__class__']
-                if cls in globals():
-                    FileStorage.__objects[obj['id']] = globals()[cls](**obj)
+            for key, obj in objects.items():
+                cls_name, obj_id = key.split(".")
+                cls = self.__objects[cls_name]
+                self.__objects[key] = cls(**obj)
         except FileNotFoundError:
             pass
