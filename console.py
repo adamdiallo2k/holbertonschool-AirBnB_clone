@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """HBNBCommand class for the console"""
+from models.engine.file_storage import FileStorage
 import cmd
 import shlex
 from models.base_model import BaseModel
@@ -9,7 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-from models import storage
+
 
 class HBNBCommand(cmd.Cmd):
     """HBNBCommand class that includes methods for the HBNB command interpreter."""
@@ -58,7 +59,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        all_instances = storage.all()
+        all_instances = FileStorage.storage.all()
         instance_key = args[0] + '.' + args[1]
         if instance_key in all_instances:
             print(all_instances[instance_key])
@@ -81,11 +82,11 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        all_instances = storage.all()
+        all_instances = FileStorage.storage.all()
         instance_key = args[0] + '.' + args[1]
         if instance_key in all_instances:
             all_instances.pop(instance_key)
-            storage.save()
+            FileStorage.storage.save()
         else:
             print("** no instance found **")
 
