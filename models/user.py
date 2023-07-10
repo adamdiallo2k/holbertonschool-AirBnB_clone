@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """inherite the basemodel class."""
 from models.base_model import BaseModel
+from models import storage
 
 
 class User(BaseModel):

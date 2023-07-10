@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """commented function"""
+from models import storage
 from models.base_model import BaseModel
 
 
