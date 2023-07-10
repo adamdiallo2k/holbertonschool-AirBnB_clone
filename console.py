@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """HBNBCommand class for the console"""
 import cmd
+import shlex
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -47,7 +48,7 @@ class HBNBCommand(cmd.Cmd):
         if not arg:
             print("** class name missing **")
             return
-        args = arg.split(arg)
+        args = shlex.split(arg)
         if len(args) < 1:
             print("** instance id missing **")
             return
@@ -69,7 +70,7 @@ class HBNBCommand(cmd.Cmd):
         if not arg:
             print("** class name missing **")
             return
-        args = arg.split(arg)
+        args = shlex.split(arg)
         if len(args) < 1:
             print("** instance id missing **")
             return
@@ -109,7 +110,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        args = arg.split(arg)
+        args = shlex.split(arg)
         if len(args) < 2:
             print("** instance id missing **")
             return
