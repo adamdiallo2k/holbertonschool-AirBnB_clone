@@ -2,6 +2,7 @@
 """BaseModel class"""
 import uuid
 from datetime import datetime
+from models import storage
 
 class BaseModel:
     """BaseModel class that defines all common attributes/methods for other classes."""
@@ -21,13 +22,11 @@ class BaseModel:
         else:
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
-            from models import storage
             storage.new(self)
 
     def save(self):
         """Update the updated_at attribute and save the object to storage."""
         self.updated_at = datetime.now()
-        from models import storage
         storage.save()
 
     def to_dict(self):
