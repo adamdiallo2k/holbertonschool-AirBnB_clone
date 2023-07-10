@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """FileStorage class"""
+from models import storage
 import json
 from models.user import User
 from models.place import Place
