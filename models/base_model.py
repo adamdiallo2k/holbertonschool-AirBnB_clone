@@ -21,6 +21,14 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = self.created_at
             models.storage.new(self)
+    
+    def __str__(self):
+        """
+        Representation of the class for the user
+        """
+        return '[{0}] ({1}) {2}'.format(
+                self.__class__.__name__, self.id, self.__dict__
+            )
 
     def save(self):
         """Update the updated_at attribute and save the object to storage."""
