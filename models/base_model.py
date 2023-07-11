@@ -1,33 +1,28 @@
 #!/usr/bin/python3
 """BaseModel class"""
-import uuid
+from uuid import uuid4
 from datetime import datetime
-from models.engine.file_storage import FileStorage
+import models
 
 class BaseModel:
     """BaseModel class that defines all common attributes/methods for other classes."""
 
     def __init__(self, *args, **kwargs):
         """Initialize a new BaseModel."""
+        self.id = str(uuid4())
+        self.created_at = self.updated_at = datetime.utcnow()
         if kwargs:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
-                    setattr(self, key, datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f"))
-                elif key != "__class__":
+                    value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                if key != "__class__":
                     setattr(self, key, value)
-            if "id" not in kwargs:
-                self.id = str(uuid.uuid4())
-            if "created_at" not in kwargs:
-                self.created_at = self.updated_at = datetime.now()
-        else:
-            self.id = str(uuid.uuid4())
-            self.created_at = self.updated_at = datetime.now()
-            FileStorage.storage.new(self)
 
     def save(self):
         """Update the updated_at attribute and save the object to storage."""
         self.updated_at = datetime.now()
-        FileStorage.storage.save()
+        models.storage.new(self)
+        models.storage.save()
 
     def to_dict(self):
         """Return a dictionary representation of the BaseModel."""
