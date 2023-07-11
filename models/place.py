@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """place class.
 """
-from models import storage
 from models.base_model import BaseModel
+
 
 class Place(BaseModel):
     city_id = ""
