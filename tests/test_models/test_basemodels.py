@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+"""Unittest for base model module."""
+
 from datetime import datetime
 from models.base_model import BaseModel
 from models.city import City
@@ -7,6 +9,7 @@ from models.amenity import Amenity
 from models.state import State
 from models.review import Review
 import os
+import pep8
 import unittest
 import uuid
 

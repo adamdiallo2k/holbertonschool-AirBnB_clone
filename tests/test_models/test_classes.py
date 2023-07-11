@@ -99,3 +99,6 @@ class Teststate(unittest.TestCase):
         """
         state1 = State()
         self.assertEqual(state1.__class__.__name__, "State")
+
+if __name__ == "__main__":
+    unittest.main()
