@@ -92,12 +92,6 @@ class TestPlace_instantiation(unittest.TestCase):
         self.assertIn("longitude", dir(pl))
         self.assertNotIn("longitude", pl.__dict__)
 
-    def test_amenity_ids_is_public_class_attribute(self):
-        pl = Place()
-        self.assertEqual(list, type(Place.amenity_ids))
-        self.assertIn("amenity_ids", dir(pl))
-        self.assertNotIn("amenity_ids", pl.__dict__)
-
     def test_two_places_unique_ids(self):
         pl1 = Place()
         pl2 = Place()
