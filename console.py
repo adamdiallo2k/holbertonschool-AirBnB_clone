@@ -15,10 +15,18 @@ from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
-    """HBNBCommand class that includes methods for the HBNB command interpreter."""
+    """
+    HBNBCommand class that includes methods for the HBNB command interpreter.
+    """
 
     prompt = '(hbnb) '
-    classes = {"BaseModel": BaseModel, "User": User, "Place": Place, "State": State, "City": City, "Amenity": Amenity, "Review": Review}
+    classes = {"BaseModel": BaseModel,
+               "User": User,
+               "Place": Place,
+               "State": State,
+               "City": City,
+               "Amenity": Amenity,
+               "Review": Review}
 
     def do_quit(self, arg):
         """Quit command to exit the program"""
@@ -33,7 +41,10 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        """Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id."""
+        """
+        Creates a new instance of BaseModel, saves it (to the JSON file)
+        and prints the id.
+        """
         command = self.parseline(arg)[0]
         if command is None:
             print('** class name missing **')
@@ -45,7 +56,10 @@ class HBNBCommand(cmd.Cmd):
             print(new_obj.id)
 
     def do_show(self, arg):
-        """Prints the string representation of an instance based on the class name and id."""
+        """
+        Prints the string representation of an instance based
+        on the class name and id.
+        """
         command = self.parseline(arg)[0]
         arg = self.parseline(arg)[1]
         if command is None:
@@ -62,7 +76,10 @@ class HBNBCommand(cmd.Cmd):
                 print(inst_data)
 
     def do_destroy(self, arg):
-        """Deletes an instance based on the class name and id (save the change into the JSON file)."""
+        """
+        Deletes an instance based on the class name and id
+        (save the change into the JSON file).
+        """
         command = self.parseline(arg)[0]
         arg = self.parseline(arg)[1]
         if command is None:
@@ -79,8 +96,12 @@ class HBNBCommand(cmd.Cmd):
             else:
                 del models.storage.all()[key]
                 models.storage.save()
+
     def do_all(self, arg):
-        """Prints all string representation of all instances based or not on the class name."""
+        """
+        Prints all string representation of all instances
+        based or not on the class name.
+        """
         command = self.parseline(arg)[0]
         objs = models.storage.all()
         if command is None:
@@ -92,7 +113,10 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
     def do_update(self, arg):
-        """Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file)."""
+        """
+        Updates an instance based on the class name and id by adding or
+        updating attribute (save the change into the JSON file).
+        """
         args = shlex.split(arg)
         args_size = len(args)
         if args_size == 0:
@@ -115,6 +139,7 @@ class HBNBCommand(cmd.Cmd):
                 setattr(inst_data, args[2], args[3])
                 setattr(inst_data, 'updated_at', datetime.now())
                 models.storage.save()
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

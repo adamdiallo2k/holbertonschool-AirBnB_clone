@@ -16,6 +16,7 @@ class Place(BaseModel):
     latitude = 0.0
     longitude = 0.0
     amenity_ids = ""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.city_id = kwargs.get("city_id", "")

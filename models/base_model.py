@@ -4,8 +4,12 @@ import uuid
 from datetime import datetime
 import models
 
+
 class BaseModel:
-    """BaseModel class that defines all common attributes/methods for other classes."""
+    """
+    BaseModel class that defines all common
+    attributes/methods for other classes.
+    """
 
     def __init__(self, *args, **kwargs):
         """Initialize a new BaseModel."""
@@ -21,7 +25,7 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = self.created_at
             models.storage.new(self)
-    
+
     def __str__(self):
         """
         Representation of the class for the user
@@ -31,7 +35,9 @@ class BaseModel:
             )
 
     def save(self):
-        """Update the updated_at attribute and save the object to storage."""
+        """
+        Update the updated_at attribute and save the object to storage.
+        """
         self.updated_at = datetime.now()
         models.storage.save()
 

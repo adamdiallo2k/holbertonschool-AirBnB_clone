@@ -10,8 +10,12 @@ from models.amenity import Amenity
 from models.review import Review
 from os import path
 
+
 class FileStorage:
-    """FileStorage class that serializes instances to a JSON file and deserializes JSON file to instances."""
+    """
+    FileStorage class that serializes instances to a JSON file
+    and deserializes JSON file to instances.
+    """
 
     __file_path = "file.json"
     __objects = {}
@@ -34,7 +38,10 @@ class FileStorage:
             f.write(json.dumps(serialize_obj))
 
     def reload(self):
-        """Deserializes the JSON file to __objects (only if the JSON file (__file_path) exists"""
+        """
+        Deserializes the JSON file to __objects (only if the JSON file
+        (__file_path) exists
+        """
         try:
             if path.exists(self.__file_path):
                 with open(self.__file_path, mode='r', encoding='utf-8') as f:
